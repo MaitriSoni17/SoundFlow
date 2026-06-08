@@ -1,4 +1,3 @@
-// <reference types="react/jsx-runtime" />
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { Track, LoopMode } from './types';
 import AudioVisualizer from './components/AudioVisualizer';
@@ -353,22 +352,18 @@ export default function App() {
     audioRef.current.load();
 
     if (forcePlay) {
-      console.log('[SoundFlow] Attempting to play', tracks[index].name, tracks[index].url);
-      // Ensure volume/mute state applied before play
-      audioRef.current.muted = isMuted;
-      audioRef.current.volume = isMuted ? 0 : volume;
       audioRef.current.play()
         .then(() => {
-          console.log('[SoundFlow] Play promise resolved');
           setIsPlaying(true);
           if (shouldFade) {
             startCrossFade(oldUrl, oldTime);
           } else {
+            // Restore normal volume
             audioRef.current!.volume = isMuted ? 0 : volume;
           }
         })
         .catch(err => {
-          console.warn("Playback autoplay prevented or failed:", err);
+          console.warn("Playback autoplay prevented:", err);
           setIsPlaying(false);
           audioRef.current!.volume = isMuted ? 0 : volume;
         });
@@ -475,13 +470,9 @@ export default function App() {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      // Apply volume/mute state and log
-      audioRef.current.muted = isMuted;
-      audioRef.current.volume = isMuted ? 0 : volume;
-      console.log('[SoundFlow] User toggled play — attempting audio.play()');
       audioRef.current.play()
         .then(() => setIsPlaying(true))
-        .catch(err => console.warn('[SoundFlow] play() failed:', err));
+        .catch(err => console.warn(err));
     }
   }, [tracks, currentIndex, isPlaying, handlePlayTrack]);
 
@@ -574,18 +565,6 @@ export default function App() {
     } else {
       handleNext();
     }
-  };
-
-  const handleAudioPlayEvent = () => {
-    console.log('[SoundFlow] audio play event', audioRef.current?.src);
-  };
-
-  const handleAudioPauseEvent = () => {
-    console.log('[SoundFlow] audio pause event');
-  };
-
-  const handleAudioErrorEvent = (e: any) => {
-    console.error('[SoundFlow] audio error event', e, audioRef.current?.error);
   };
 
   // File loading parse chain
@@ -761,7 +740,6 @@ export default function App() {
   }, [currentIndex, tracks]);
 
   return (
-    <>
     <div
       onDragOver={handleDragOverClass}
       onDragLeave={handleDragLeaveClass}
@@ -790,21 +768,12 @@ export default function App() {
         onLoadedMetadata={handleLoadedMetadata}
         onTimeUpdate={handleTimeUpdate}
         onEnded={handleAudioEnded}
-        onPlay={handleAudioPlayEvent}
-        onPause={handleAudioPauseEvent}
-        onError={handleAudioErrorEvent}
-        playsInline
-        preload="auto"
       />
 
       {/* Auxiliary audio node for crossfading transitions */}
       <audio
         ref={auxAudioRef}
         crossOrigin="anonymous"
-        onPlay={() => console.log('[SoundFlow] aux audio play', auxAudioRef.current?.src)}
-        onError={(e) => console.error('[SoundFlow] aux audio error', e, auxAudioRef.current?.error)}
-        playsInline
-        preload="auto"
       />
 
       {/* Primary container */}
@@ -1094,6 +1063,5 @@ export default function App() {
         <p className="text-[11px] font-mono tracking-wider uppercase text-slate-600">SoundFlow Open-Engine Music Queue v1.1</p>
       </footer>
     </div>
-    </>
   );
 }
