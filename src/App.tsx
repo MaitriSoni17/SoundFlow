@@ -4,7 +4,6 @@ import AudioVisualizer from './components/AudioVisualizer';
 import TrackList from './components/TrackList';
 import { getStandaloneHTML } from './components/StandaloneExporter';
 import { saveTrackBlob, getTrackBlob, deleteTrackBlob, clearAllTrackBlobs, blobToBase64, base64ToBlob } from './utils/db';
-
 import {
   Play,
   Pause,
@@ -765,6 +764,7 @@ export default function App() {
       {/* Hidden standard audio node */}
       <audio
         ref={audioRef}
+        crossOrigin="anonymous"
         onLoadedMetadata={handleLoadedMetadata}
         onTimeUpdate={handleTimeUpdate}
         onEnded={handleAudioEnded}
@@ -773,6 +773,7 @@ export default function App() {
       {/* Auxiliary audio node for crossfading transitions */}
       <audio
         ref={auxAudioRef}
+        crossOrigin="anonymous"
       />
 
       {/* Primary container */}
