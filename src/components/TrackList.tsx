@@ -160,6 +160,7 @@ export default function TrackList({
                 onDragEnd={handleDragEnd}
                 onDoubleClick={() => onSelectTrack(originalIndex)}
                 id={`track-item-${originalIndex}`}
+                title={track.name}
                 className={`group flex items-center justify-between gap-3 px-4 py-3 rounded-xl border transition-all text-sm select-none cursor-pointer
                   ${isActive 
                     ? 'bg-cyan-500/10 border-l-[3px] border-l-cyan-400 border-t-white/5 border-b-white/5 border-r-white/5 rounded-r-xl rounded-l-none pl-3.5 text-white' 
@@ -183,7 +184,10 @@ export default function TrackList({
                   </div>
 
                   <div className="flex flex-col min-w-0 pr-2">
-                    <span className={`truncate font-medium ${isActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`}>
+                    <span 
+                      title={track.name}
+                      className={`truncate font-medium ${isActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`}
+                    >
                       {track.name}
                     </span>
                     <span className="text-[11px] text-slate-500 font-mono mt-0.5">

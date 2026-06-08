@@ -860,7 +860,11 @@ export default function App() {
 
             {/* Playing track name details */}
             <div className="text-center md:text-left py-2">
-              <h2 className="text-lg font-semibold text-white tracking-tight truncate max-w-full" id="cur-track-title">
+              <h2 
+                className="text-lg font-semibold text-white tracking-tight truncate max-w-full" 
+                id="cur-track-title"
+                title={currentTrack ? currentTrack.name : 'No track selected'}
+              >
                 {currentTrack ? currentTrack.name : 'No track selected'}
               </h2>
               <p className="text-xs text-slate-400 mt-1" id="cur-track-size">
