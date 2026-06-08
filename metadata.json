@@ -1,0 +1,6 @@
+{
+  "name": "Sequential Audio Player",
+  "description": "An offline-friendly sequential audio playlist player with styled glassmorphic controls and queue management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
